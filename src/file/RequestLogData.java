@@ -1,6 +1,6 @@
 package file;
 
-public class XlsData {
+public class RequestLogData {
 	private int id;
 	private String operation;
 	private boolean result;

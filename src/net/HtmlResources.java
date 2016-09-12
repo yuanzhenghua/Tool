@@ -1,6 +1,7 @@
 package net;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,9 +9,9 @@ import org.openqa.selenium.WebDriver;
 
 public class HtmlResources {
 	
-	public static List<String> getHtmlResUrl(String url, String path, String param) throws Exception{
+	public static List<String> getHtmlResUrl(String url, String path, String param, Map<String, String> head) throws Exception{
 		List<String> resUrl = new ArrayList<>();
-		String content = HttpRequest.getHtml(url+path, param).get("info");
+		String content = HttpRequest.sendGet(url+path, param, head).get("info");
 		resUrl.add(url+path);
 		resUrl.addAll(HtmlResources.getPicture(url, content));
 		resUrl.addAll(HtmlResources.getCss(url, content));

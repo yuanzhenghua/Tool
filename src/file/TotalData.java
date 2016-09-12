@@ -1,6 +1,6 @@
 package file;
 
-public class TextData {
+public class TotalData {
 	private int total;
 	private int success;
 	private int fail;
@@ -8,7 +8,7 @@ public class TextData {
 	private float maxTime;
 	private float minTime;
 	
-	public TextData(int total, int success, int fail, float totalExecutionTime, float maxTime, float minTime) {
+	public TotalData(int total, int success, int fail, float totalExecutionTime, float maxTime, float minTime) {
 		this.total = total;
 		this.success = success;
 		this.fail = fail;
