@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -24,10 +25,34 @@ public class WriteFile {
 	public String CreateFolder(String file) throws IOException {
 		String folderpath = file+"\\"+new SimpleDateFormat("yyyy-MM-dd HHmmss").format(new Date());
 		//System.out.println(folderpath);
-		if(!new File(folderpath).exists()){
+		if(!folderExists(folderpath)){
 			new File(folderpath).mkdirs();
 		}
 		return folderpath;
+	}
+	
+	/**
+	 * 检测文件是否存在
+	 * @param filepath
+	 * @return true:存在；false:不存在
+	 */
+	public boolean fileExists(String filepath) {
+		if (new File(filepath).exists()) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 检测文件夹是否存在
+	 * @param folderpath
+	 * @return true:存在；false:不存在
+	 */
+	public boolean folderExists(String folderpath) {
+		if (new File(folderpath).exists()  || new File(folderpath).isDirectory()) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -38,7 +63,7 @@ public class WriteFile {
 	 */
 	public void WriteTxt(String path, TotalData data) throws IOException {
 		String filepath = path+"\\InformationCenter.txt";
-		if(!new File(filepath).exists()){
+		if(!fileExists(filepath)){
 			new File(filepath).createNewFile();
 		}
 		//写文件
@@ -106,12 +131,15 @@ public class WriteFile {
 		if(sheet.getLastRowNum()==0){
 			sheet.createRow(0);
 			sheet.getRow(0).createCell(0).setCellValue("Id");
-			sheet.getRow(0).createCell(1).setCellValue("operation");
+			sheet.getRow(0).createCell(1).setCellValue("Operation");
 			sheet.getRow(0).createCell(2).setCellValue("StartTime");
 			sheet.getRow(0).createCell(3).setCellValue("EndTime");
 			sheet.getRow(0).createCell(4).setCellValue("ExecutionTime");
 			sheet.getRow(0).createCell(5).setCellValue("Result");
-			sheet.getRow(0).createCell(6).setCellValue("Explain");
+			sheet.getRow(0).createCell(6).setCellValue("ResultCode");
+			sheet.getRow(0).createCell(7).setCellValue("ErrorMessage");
+			sheet.getRow(0).createCell(8).setCellValue("reqData");
+			sheet.getRow(0).createCell(9).setCellValue("respData");
 		}
 		sheet.createRow(sheet.getLastRowNum()+1);
 		sheet.getRow(sheet.getLastRowNum()).createCell(0).setCellValue(data.getId());
@@ -120,12 +148,19 @@ public class WriteFile {
 		sheet.getRow(sheet.getLastRowNum()).createCell(3).setCellValue(data.getEndTime());
 		sheet.getRow(sheet.getLastRowNum()).createCell(4).setCellValue(data.getExecutionTime());
 		sheet.getRow(sheet.getLastRowNum()).createCell(5).setCellValue(data.isResult());
-		sheet.getRow(sheet.getLastRowNum()).createCell(6).setCellValue(data.getExplain());
+		sheet.getRow(sheet.getLastRowNum()).createCell(6).setCellValue(data.getResultCode());
+		sheet.getRow(sheet.getLastRowNum()).createCell(7).setCellValue(data.getErrorMessage());
+		sheet.getRow(sheet.getLastRowNum()).createCell(8).setCellValue(data.getReqData());
+		sheet.getRow(sheet.getLastRowNum()).createCell(9).setCellValue(data.getRespData());
 		FileOutputStream out = new FileOutputStream(filepath);
 		out.flush();
 		wb.write(out);
 		out.close();
 	}
+	
+//	public List<TimeAxisData> updataTimeAxisData(List<TimeAxisData> timeAxisData, RequestLogData requestLogData) {
+//		
+//	}
 	
 	/**
 	 * 每秒请求响应数据条数统计记录保存

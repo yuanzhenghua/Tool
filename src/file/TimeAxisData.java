@@ -35,7 +35,7 @@ public class TimeAxisData {
 	public int getFailCount() {
 		return failCount;
 	}
-	public void setFail(int failCount) {
+	public void setFailCount(int failCount) {
 		this.failCount = failCount;
 	}
 	
