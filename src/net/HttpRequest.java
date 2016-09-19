@@ -19,16 +19,18 @@ public class HttpRequest {
     /**
      * 向指定URL发送GET方法的请求
      * @param url	发送请求的URL
-     * @param param	请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
+     * @param param	请求参数，
      * @param head	请求头参数
      * @return 	所代表远程资源的响应结果
      */
-    public static Map<String, String> sendGet(String url, String param, Map<String, String> head) throws Exception {
+    public static Map<String, String> sendGet(String url, Map<String, String> param, Map<String, String> head) throws Exception {
     	Map<String, String> result = new HashMap<>();
     	result.put("id", String.valueOf(getHttpRequestCount()));
         BufferedReader in = null;
         try {
         	//System.out.println(url);
+        	String p = setParam2(param);
+        	result.put("req", p);
             String urlNameString = url + "?" + param;
             URL realUrl = new URL(urlNameString);
             // 打开和URL之间的连接
@@ -43,25 +45,45 @@ public class HttpRequest {
                 in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line;
                 while ((line = in.readLine()) != null) {
-                	result.put("info", result.get("info")+line);
-//                	result += line;
+                	if (result.get("resp") == null || result.get("resp").equals("")) {
+            			result.put("resp", line);
+					} else {
+						result.put("resp", result.get("resp")+line);
+					}
                 }
 			} else {
-				result.put("info", "");
+				result.put("resp", "");
 			}
+            result.put("errorMessage", "");
         } finally {
             try {
                 if (in != null) {
                     in.close();
                 }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+            } catch (Exception ex) {
+            	ex.printStackTrace();
+                result.put("errorMessage", ex.getMessage());
             }
         }
         return result;
     }
 
-    /**
+    private static String setParam2(Map<String, String> param) {
+		String p = "";
+		if (param != null) {
+			for (String key : param.keySet()) {
+				if (!p.equals("")) {
+					p = p + "&";
+				}
+				if (param.get(key) != null && param.get(key).equals("")) {
+					p = p + key + "=" + param.get(key);
+				}
+			}
+		}
+		return p;
+	}
+
+	/**
      * 向指定 URL 发送POST方法的请求
      * @param method	提交数据的格式，默认或空值：application/x-www-form-urlencoded，表单模式：multipart/form-data，其他模式只用用到再补充实现
      * @param url	发送请求的 URL

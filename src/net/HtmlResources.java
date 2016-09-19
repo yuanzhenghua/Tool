@@ -9,9 +9,9 @@ import org.openqa.selenium.WebDriver;
 
 public class HtmlResources {
 	
-	public static List<String> getHtmlResUrl(String url, String path, String param, Map<String, String> head) throws Exception{
+	public static List<String> getHtmlResUrl(String url, String path, Map<String, String> param, Map<String, String> head) throws Exception{
 		List<String> resUrl = new ArrayList<>();
-		String content = HttpRequest.sendGet(url+path, param, head).get("info");
+		String content = HttpRequest.sendGet(url+path, param, head).get("resp");
 		resUrl.add(url+path);
 		resUrl.addAll(HtmlResources.getPicture(url, content));
 		resUrl.addAll(HtmlResources.getCss(url, content));
@@ -26,12 +26,10 @@ public class HtmlResources {
 		
 		List<String> list1 =  new HtmlResources().getAddress(content, searchImgReg);
 		for (String l : list1) {
-//			picture = HttpRequest.getHtml(url+l, "");
 			pictures.add(url+l);
 		}
 		List<String> list2 =  new HtmlResources().getAddress(content, searchImgReg2);
 		for (String l : list2) {
-//			picture = HttpRequest.getHtml(l, "");
 			pictures.add(l);
 		}
 		return pictures;
@@ -44,12 +42,10 @@ public class HtmlResources {
 		
 		List<String> list1 =  new HtmlResources().getAddress(content, searchImgReg);
 		for (String l : list1) {
-//			css = HttpRequest.getHtml(url+l, "");
 			css.add(url+l);
 		}
 		List<String> list2 =  new HtmlResources().getAddress(content, searchImgReg2);
 		for (String l : list2) {
-//			css = HttpRequest.getHtml(l, "");
 			css.add(l);
 		}
 		return css;
