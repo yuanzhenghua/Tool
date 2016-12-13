@@ -52,4 +52,16 @@ public class ElementTool {
 			return attr;
 		}
 	}
+	
+	public static float getsWidth(WebDriver driver) {
+		return Float.parseFloat(String.valueOf(((JavascriptExecutor) driver).executeScript("return screen.width")));
+	}
+
+	public static float getsHeight(WebDriver driver) {
+		return Float.parseFloat(String.valueOf(((JavascriptExecutor) driver).executeScript("return screen.height")));
+	}
+
+	public static float getFontSize(WebDriver driver) {
+		return Float.parseFloat(driver.findElement(By.tagName("html")).getCssValue("font-size").substring(0, driver.findElement(By.tagName("html")).getCssValue("font-size").length()-2));
+	}
 }
